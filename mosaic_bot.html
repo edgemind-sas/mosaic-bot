@@ -26,18 +26,25 @@
 <li><a href="#introduction">1. Introduction</a></li>
 <li><a href="#init-env">2. Initialisation de l'environnement</a>
 <ul>
-<li><a href="#orgd5e2c89">2.1. Créer un environnement virtuel avec pew</a></li>
-<li><a href="#orgb7228ed">2.2. Installer la librairie MOSAIC avec pip</a></li>
-<li><a href="#org04f9a36">2.3. Installer MongoDB avec Docker-compose</a></li>
-<li><a href="#org68f4bb4">2.4. Cloner Mosaic Monitor</a></li>
+<li><a href="#org126c40d">2.1. Créer un environnement virtuel avec pew</a></li>
+<li><a href="#orga63a3a4">2.2. Installer la librairie MOSAIC avec pip</a></li>
+<li><a href="#org5d0963d">2.3. Installer MongoDB avec Docker-compose</a></li>
+<li><a href="#org0b7b4f7">2.4. Cloner Mosaic Monitor</a></li>
 </ul>
 </li>
-<li><a href="#org8809d9c">3. Création d'un bot achat-vente RSI</a>
+<li><a href="#orgeee8415">3. Création d'un bot</a>
 <ul>
-<li><a href="#orge19a6b0">3.1. Création d'un modèle de décision</a></li>
+<li><a href="#org4e08abd">3.1. Spécification du bot</a></li>
+<li><a href="#orge53723a">3.2. Exécution du bot en mode backtest</a></li>
+<li><a href="#org6b80e00">3.3. Éléments de Configuration d'un Bot</a>
+<ul>
+<li><a href="#orge46f8dd">3.3.1. Définition des indicateurs</a></li>
+<li><a href="#orgad21a5f">3.3.2. Modèles de Prédiction</a></li>
+<li><a href="#orgc375931">3.3.3. Spécification du Bot</a></li>
 </ul>
 </li>
-<li><a href="#orgb0dd25f">4. Références</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -74,34 +81,12 @@ cette base de données MongoDB pour surveiller en temps réel l'état des bots e
 <h2 id="init-env"><span class="section-number-2">2.</span> Initialisation de l'environnement</h2>
 <div class="outline-text-2" id="text-init-env">
 <p>
-Le projet MOSAIC est un projet de développement d'algorithmes de trading.
-</p>
-
-<p>
-Le projet se compose :
-</p>
-<ul class="org-ul">
-<li>d'une librairie python accessible ici <a href="https://github.com/edgemind-sas/mosaic.git">https://github.com/edgemind-sas/mosaic.git</a> contenant des
-fonctionnalités de création de stratégies sous forme de bot à base d'indictateurs techniques</li>
-<li>d'une application Mosaic monitor dont le code est clonable ici :
-<a href="https://github.com/edgemind-sas/mosaic_monitor">https://github.com/edgemind-sas/mosaic_monitor</a></li>
-</ul>
-
-<p>
-Pour fonctionner de manière optimale et pouvoir analyser les résultats, il est possible d'utiliser
-une base de données Mongo DB de manière à tracer les actions et les performances d'un bot créer avec
-la librairie MOSAIC. L'application MOSAIC Monitor peut ensuite se connecter à la base Mongo de
-manière à surveiller l'état des bots et visualiser leurs performances.
-</p>
-
-
-<p>
 Les paragraphes suivants donnent les prérequis pour tester la librairie MOSAIC.
 </p>
 </div>
 
-<div id="outline-container-orgd5e2c89" class="outline-3">
-<h3 id="orgd5e2c89"><span class="section-number-3">2.1.</span> Créer un environnement virtuel avec pew</h3>
+<div id="outline-container-org126c40d" class="outline-3">
+<h3 id="org126c40d"><span class="section-number-3">2.1.</span> Créer un environnement virtuel avec pew</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 Commencez par installer <code>pew</code> si cela n'est pas déjà fait :
@@ -121,8 +106,8 @@ Créer ensuite un nouvel environnement virtuel :
 </div>
 </div>
 
-<div id="outline-container-orgb7228ed" class="outline-3">
-<h3 id="orgb7228ed"><span class="section-number-3">2.2.</span> Installer la librairie MOSAIC avec pip</h3>
+<div id="outline-container-orga63a3a4" class="outline-3">
+<h3 id="orga63a3a4"><span class="section-number-3">2.2.</span> Installer la librairie MOSAIC avec pip</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 Installez la librairie MOSAIC dans votre environnement à partir de github :
@@ -143,8 +128,8 @@ Vous devriez être capable d'importer la librairie MOSAIC dans une session Pytho
 </div>
 
 
-<div id="outline-container-org04f9a36" class="outline-3">
-<h3 id="org04f9a36"><span class="section-number-3">2.3.</span> Installer MongoDB avec Docker-compose</h3>
+<div id="outline-container-org5d0963d" class="outline-3">
+<h3 id="org5d0963d"><span class="section-number-3">2.3.</span> Installer MongoDB avec Docker-compose</h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 Créez le fichier <code>docker-compose.yml</code> avec le contenu suivant
@@ -180,8 +165,8 @@ Lancez MongoDB avec Docker-compose comme suit :
 </div>
 </div>
 
-<div id="outline-container-org68f4bb4" class="outline-3">
-<h3 id="org68f4bb4"><span class="section-number-3">2.4.</span> Cloner Mosaic Monitor</h3>
+<div id="outline-container-org0b7b4f7" class="outline-3">
+<h3 id="org0b7b4f7"><span class="section-number-3">2.4.</span> Cloner Mosaic Monitor</h3>
 <div class="outline-text-3" id="text-2-4">
 <p>
 Clonez le dépôt Github suivant
@@ -210,26 +195,8 @@ Lancer l'application en faisant :
 
 
 <div class="org-src-container">
-<pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">import</span> os
-<span style="color: #F0DFAF; font-weight: bold;">import</span> sys
-<span style="color: #F0DFAF; font-weight: bold;">import</span> tqdm
-<span style="color: #F0DFAF; font-weight: bold;">import</span> time
-<span style="color: #F0DFAF; font-weight: bold;">import</span> numpy <span style="color: #F0DFAF; font-weight: bold;">as</span> np
-<span style="color: #F0DFAF; font-weight: bold;">import</span> datetime
-<span style="color: #F0DFAF; font-weight: bold;">import</span> pandas <span style="color: #F0DFAF; font-weight: bold;">as</span> pd
-<span style="color: #F0DFAF; font-weight: bold;">import</span> plotly.io <span style="color: #F0DFAF; font-weight: bold;">as</span> pio
-
-<span style="color: #F0DFAF; font-weight: bold;">import</span> pkg_resources
-<span style="color: #DFAF8F;">installed_pkg</span> = {pkg.key <span style="color: #F0DFAF; font-weight: bold;">for</span> pkg <span style="color: #F0DFAF; font-weight: bold;">in</span> pkg_resources.working_set}
-<span style="color: #F0DFAF; font-weight: bold;">if</span> <span style="color: #CC9393;">'ipdb'</span> <span style="color: #F0DFAF; font-weight: bold;">in</span> installed_pkg:
-<span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #F0DFAF; font-weight: bold;">import</span> ipdb  <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">noqa: F401</span>
-<span style="color: #F0DFAF; font-weight: bold;">import</span> importlib
-
-<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Custom remote librairies</span>
-<span style="color: #F0DFAF; font-weight: bold;">import</span> mosaic
-<span style="color: #F0DFAF; font-weight: bold;">import</span> mosaic.utils <span style="color: #F0DFAF; font-weight: bold;">as</span> mut
-<span style="color: #F0DFAF; font-weight: bold;">import</span> mosaic.trading <span style="color: #F0DFAF; font-weight: bold;">as</span> mtr
-<span style="color: #F0DFAF; font-weight: bold;">import</span> mosaic.decision_model <span style="color: #F0DFAF; font-weight: bold;">as</span> mdm
+<pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">import</span> mosaic.trading <span style="color: #F0DFAF; font-weight: bold;">as</span> mtr
+<span style="color: #F0DFAF; font-weight: bold;">import</span> yaml
 </pre>
 </div>
 </div>
@@ -237,45 +204,204 @@ Lancer l'application en faisant :
 </div>
 
 
-<div id="outline-container-org8809d9c" class="outline-2">
-<h2 id="org8809d9c"><span class="section-number-2">3.</span> Création d'un bot achat-vente RSI</h2>
+<div id="outline-container-orgeee8415" class="outline-2">
+<h2 id="orgeee8415"><span class="section-number-2">3.</span> Création d'un bot</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-orge19a6b0" class="outline-3">
-<h3 id="orge19a6b0"><span class="section-number-3">3.1.</span> Création d'un modèle de décision</h3>
+<div id="outline-container-org4e08abd" class="outline-3">
+<h3 id="org4e08abd"><span class="section-number-3">3.1.</span> Spécification du bot</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
-La création d'un bot d'achat-vente demande au préalable de disposer d'un modèle de décision
-d'achat-vente.
+Pour définir un bot, le plus simple est créer un fichier de configuration permettant de spécifier
+les caractéristiques du bot.
 </p>
 
 <p>
-Un modèle de décision d'achat-vente a simplement pour objectif de générer des signaux d'achat et des
-signaux de vente en fonction d'une certaine logique.
-</p>
-
-<p>
-Dans cet exemple, nous allons utiliser le modèle de décision <code>DML_RSI2</code> qui génère les signaux
-d'achat et de vente en fonction des valeurs observées de l'indicateur RSI.
+Pour ce faire, créez un fichier YAML <code>bot.yaml</code> contenant les éléments suivants :
 </p>
 <div class="org-src-container">
-<pre class="src src-python"><span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">dm = mdm.DML_RSI2(</span>
-<span style="color: #5F7F5F;">#         </span><span style="color: #7F9F7F;">offset=1,</span>
-<span style="color: #5F7F5F;">#         </span><span style="color: #7F9F7F;">params={</span>
-<span style="color: #5F7F5F;">#             </span><span style="color: #7F9F7F;">"window": 10,</span>
-<span style="color: #5F7F5F;">#             </span><span style="color: #7F9F7F;">"buy_level": 15,</span>
-<span style="color: #5F7F5F;">#             </span><span style="color: #7F9F7F;">"sell_level": 95,</span>
-<span style="color: #5F7F5F;">#         </span><span style="color: #7F9F7F;">})</span>
+<pre class="src src-yaml"><span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Indicator definitions</span>
+<span style="color: #DFAF8F;">indics</span>:
+  <span style="color: #DFAF8F;">rsi_short</span>: <span style="color: #93E0E3;">&amp;rsi_short</span>
+    <span style="color: #DFAF8F;">cls</span>: RSI
+    <span style="color: #DFAF8F;">length</span>: 15
+
+  <span style="color: #DFAF8F;">mfi_short</span>: <span style="color: #93E0E3;">&amp;mfi_short</span>
+    <span style="color: #DFAF8F;">cls</span>: MFI
+    <span style="color: #DFAF8F;">length</span>: 60
+
+  <span style="color: #DFAF8F;">mfi_long</span>: <span style="color: #93E0E3;">&amp;mfi_long</span>
+    <span style="color: #DFAF8F;">cls</span>: MFI
+    <span style="color: #DFAF8F;">length</span>: 120
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Definition of return prediction model.</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Here we define a Logit up/down prediction model.</span>
+<span style="color: #DFAF8F;">predict_models</span>:
+  <span style="color: #DFAF8F;">logit</span>: <span style="color: #93E0E3;">&amp;pm_logit</span>
+    <span style="color: #DFAF8F;">cls</span>: PMLogit
+    <span style="color: #DFAF8F;">returns_horizon</span>: 60
+    <span style="color: #DFAF8F;">features</span>:
+      - <span style="color: #93E0E3;">*mfi_short</span>
+      - <span style="color: #93E0E3;">*mfi_long</span>
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Bot specification</span>
+<span style="color: #DFAF8F;">bot</span>:
+  <span style="color: #DFAF8F;">name</span>: <span style="color: #CC9393;">"logit"</span>
+  <span style="color: #DFAF8F;">mode</span>: <span style="color: #CC9393;">"btfast"</span>
+  <span style="color: #DFAF8F;">bt_buy_on</span>: high
+  <span style="color: #DFAF8F;">bt_sell_on</span>: low
+  
+  <span style="color: #DFAF8F;">ds_trading</span>: <span style="color: #93E0E3;">&amp;ds_trading</span>
+    <span style="color: #DFAF8F;">symbol</span>: <span style="color: #CC9393;">"BTC/FDUSD"</span>
+    <span style="color: #DFAF8F;">timeframe</span>: <span style="color: #CC9393;">"1s"</span>
+    <span style="color: #DFAF8F;">dt_start</span>: <span style="color: #CC9393;">"2023-09-15 00:00:00"</span>
+    <span style="color: #DFAF8F;">dt_end</span>: <span style="color: #CC9393;">"2023-09-16 00:00:00"</span>
+
+  <span style="color: #DFAF8F;">ds_fit</span>:
+    <span style="color: #DFAF8F;">&lt;&lt;</span>: <span style="color: #93E0E3;">*ds_trading</span>
+    <span style="color: #DFAF8F;">dt_start</span>: <span style="color: #CC9393;">"2023-09-12 00:00:00"</span>
+    <span style="color: #DFAF8F;">dt_end</span>: <span style="color: #CC9393;">"2023-09-15 00:00:00"</span>
+
+  <span style="color: #DFAF8F;">portfolio</span>: 
+    <span style="color: #DFAF8F;">quote_amount_init</span>: 1
+    
+  <span style="color: #DFAF8F;">decision_model</span>:
+    <span style="color: #DFAF8F;">cls</span>: DM2ML
+    <span style="color: #DFAF8F;">buy_threshold</span>: 0
+    <span style="color: #DFAF8F;">sell_threshold</span>: 0
+    <span style="color: #DFAF8F;">pm_buy</span>:
+      <span style="color: #DFAF8F;">&lt;&lt;</span>: <span style="color: #93E0E3;">*pm_logit</span>
+      <span style="color: #DFAF8F;">direction</span>: up
+
+    <span style="color: #DFAF8F;">pm_sell</span>:
+      <span style="color: #DFAF8F;">&lt;&lt;</span>: <span style="color: #93E0E3;">*pm_logit</span>
+      <span style="color: #DFAF8F;">direction</span>: down
+
+  <span style="color: #DFAF8F;">order_model</span>:
+    <span style="color: #DFAF8F;">cls</span>: OrderMarket
+    
+  <span style="color: #DFAF8F;">invest_model</span>:
+    <span style="color: #DFAF8F;">cls</span>: InvestLongModel
+    <span style="color: #DFAF8F;">nb_buy_allowed</span>: 1
+    <span style="color: #DFAF8F;">buy_quote_rate</span>: 1
+    <span style="color: #DFAF8F;">sell_base_rate</span>: 1
+        
+  <span style="color: #DFAF8F;">exchange</span> :
+    <span style="color: #DFAF8F;">cls</span>: ExchangeCCXT
+    <span style="color: #DFAF8F;">name</span>: binance
+    <span style="color: #DFAF8F;">fees_rates</span>:
+      <span style="color: #DFAF8F;">taker</span>: 0
+      <span style="color: #DFAF8F;">maker</span>: 0
 </pre>
 </div>
 </div>
 </div>
+
+<div id="outline-container-orge53723a" class="outline-3">
+<h3 id="orge53723a"><span class="section-number-3">3.2.</span> Exécution du bot en mode backtest</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+Créez ensuite le fichier Python <code>backtest_bot.py</code> suivant permettant de backtester le bot défini
+dans le fichier YAML précédent.
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">import</span> mosaic.trading <span style="color: #F0DFAF; font-weight: bold;">as</span> mtr
+<span style="color: #F0DFAF; font-weight: bold;">import</span> yaml
+
+<span style="color: #F0DFAF; font-weight: bold;">with</span> <span style="color: #DCDCCC; font-weight: bold;">open</span>(<span style="color: #CC9393;">"bot.yaml"</span>, <span style="color: #CC9393;">'r'</span>, encoding=<span style="color: #CC9393;">"utf-8"</span>) <span style="color: #F0DFAF; font-weight: bold;">as</span> yaml_file:
+<span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   bot_config = yaml.load(yaml_file,
+<span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>  Loader=yaml.SafeLoader)
+<span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   bot_config[<span style="color: #CC9393;">"bot"</span>].setdefault(<span style="color: #CC9393;">"cls"</span>, <span style="color: #CC9393;">"BotTrading"</span>)
+<span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   bot = mtr.BotTrading.from_dict(bot_config[<span style="color: #CC9393;">"bot"</span>])
+
+bot.start(
+<span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   data_dir=<span style="color: #CC9393;">"."</span>,
+<span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   progress_mode=<span style="color: #BFEBBF;">True</span>,
+)
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(bot.portfolio)
+</pre>
 </div>
 
+<p>
+Lancez le bot en exécutant la commande <code>python backtest_bot.py</code>. À la fin de l'exécution, vous
+devriez observer l'état du portefeuille (portfolio) du bot à la fin du backtest. Dans ce cas, nous
+ne sommes pas rentables&#x2026;
+</p>
+</div>
+</div>
 
-<div id="outline-container-orgb0dd25f" class="outline-2">
-<h2 id="orgb0dd25f"><span class="section-number-2">4.</span> Références</h2>
-<div class="outline-text-2" id="text-4">
+<div id="outline-container-org6b80e00" class="outline-3">
+<h3 id="org6b80e00"><span class="section-number-3">3.3.</span> Éléments de Configuration d'un Bot</h3>
+<div class="outline-text-3" id="text-3-3">
+</div>
+<div id="outline-container-orge46f8dd" class="outline-4">
+<h4 id="orge46f8dd"><span class="section-number-4">3.3.1.</span> Définition des indicateurs</h4>
+<div class="outline-text-4" id="text-3-3-1">
+<ul class="org-ul">
+<li><code>indics</code>: Ce bloc définit plusieurs indicateurs techniques utilisés par le modèle de décision.
+<ul class="org-ul">
+<li><code>rsi_short</code>: Définit un indicateur RSI avec une fenêtre de 15 unités de temps.</li>
+<li><code>mfi_short</code>: Définit un indicateur MFI avec une fenêtre de 60 unités de temps.</li>
+<li><code>mfi_long</code>: Définit un autre indicateur MFI, mais avec une fenêtre de 120 unités de temps.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgad21a5f" class="outline-4">
+<h4 id="orgad21a5f"><span class="section-number-4">3.3.2.</span> Modèles de Prédiction</h4>
+<div class="outline-text-4" id="text-3-3-2">
+<ul class="org-ul">
+<li><code>predict_models</code>: Bloc décrivant les modèles de prédiction des rendements.
+<ul class="org-ul">
+<li><code>logit</code>: Utilise un modèle Logit pour la prédiction à la hausse/baisse des rendements futurs. 
+Utilise <code>mfi_short</code> et <code>mfi_long</code> comme variables explicatives.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgc375931" class="outline-4">
+<h4 id="orgc375931"><span class="section-number-4">3.3.3.</span> Spécification du Bot</h4>
+<div class="outline-text-4" id="text-3-3-3">
+<ul class="org-ul">
+<li><p>
+<code>bot</code>: Ce bloc spécifie les détails de configuration du bot de trading.
+</p>
+<ul class="org-ul">
+<li><code>name</code>: Nom du bot, "logit" en l'occurrence.</li>
+<li><code>mode</code>: Mode de fonctionnement, "btfast" pour un backtesting rapide.</li>
+<li><code>bt_buy_on</code> et <code>bt_sell_on</code>: Hypothèses pour les prix d'achat et de vente en backtesting.</li>
+</ul>
+<p>
+<b>Configuration des Sources de Données</b>
+</p>
+<ul class="org-ul">
+<li><code>ds_trading</code>: Source de données pour le trading en temps réel ou en backtesting.</li>
+<li><code>ds_fit</code>: Source de données pour l'ajustement du modèle.</li>
+</ul>
+<p>
+<b>Modèles</b>
+</p>
+<ul class="org-ul">
+<li><code>decision_model</code>: Spécifie le modèle de décision pour les ordres d'achat et de vente.</li>
+<li><code>order_model</code>: Spécifie le modèle d'ordre, ici un ordre au marché.</li>
+<li><code>invest_model</code>: Spécifie le modèle d'investissement, autorisant un seul achat et des taux de vente/achat fixes.</li>
+</ul>
+<p>
+<b>Échange</b>
+</p>
+<ul class="org-ul">
+<li><code>exchange</code>: Détails de l'échange où les données OHLCV sont récupérées.
+<ul class="org-ul">
+<li><code>name</code>: Le nom de l'échange, ici Binance.</li>
+<li><code>fees_rates</code>: Frais de transaction utilisés.</li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 </div>
