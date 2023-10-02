@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Projet MOSAIC : Création d'un bot</title>
+<meta name="author" content="Roland Donat" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/css/readtheorg.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/js/readtheorg.js"></script>
+<link rel="stylesheet" type="text/css" href="https://edgemind-sas.github.io/visual-identity/official_docs/css/edgemind.css" />
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">Projet MOSAIC : Création d'un bot</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table des matières</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#introduction">1. Introduction</a></li>
+<li><a href="#init-env">2. Initialisation de l'environnement</a>
+<ul>
+<li><a href="#orgd5e2c89">2.1. Créer un environnement virtuel avec pew</a></li>
+<li><a href="#orgb7228ed">2.2. Installer la librairie MOSAIC avec pip</a></li>
+<li><a href="#org04f9a36">2.3. Installer MongoDB avec Docker-compose</a></li>
+<li><a href="#org68f4bb4">2.4. Cloner Mosaic Monitor</a></li>
+</ul>
+</li>
+<li><a href="#org8809d9c">3. Création d'un bot achat-vente RSI</a>
+<ul>
+<li><a href="#orge19a6b0">3.1. Création d'un modèle de décision</a></li>
+</ul>
+</li>
+<li><a href="#orgb0dd25f">4. Références</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-introduction" class="outline-2">
+<h2 id="introduction"><span class="section-number-2">1.</span> Introduction</h2>
+<div class="outline-text-2" id="text-introduction">
+<p>
+Ce document sert d'introduction à la conception de bots de trading en utilisant la librairie MOSAIC.
+</p>
+
+<p>
+Le projet MOSAIC est dédié au développement d'algorithmes de trading et se divise en deux composants
+principaux : 
+</p>
+
+<ul class="org-ul">
+<li>Une librairie Python, disponible sur <a href="https://github.com/edgemind-sas/mosaic.git">GitHub</a>, qui offre des fonctionnalités pour élaborer des
+stratégies de trading sous forme de bots, basés sur divers indicateurs techniques.</li>
+<li>Une application appelée Mosaic Monitor, dont le code source peut être cloné depuis ce lien
+<a href="https://github.com/edgemind-sas/mosaic_monitor">GitHub</a>.</li>
+</ul>
+
+<p>
+Pour analyser les résultats des stratégies de trading, MOSAIC permet
+l'intégration d'une base de données MongoDB. Cette base de données sert à enregistrer les actions et 
+les performances des bots créés via la librairie MOSAIC. Mosaic Monitor peut ensuite se connecter à
+cette base de données MongoDB pour surveiller en temps réel l'état des bots et en évaluer les performances. 
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-init-env" class="outline-2">
+<h2 id="init-env"><span class="section-number-2">2.</span> Initialisation de l'environnement</h2>
+<div class="outline-text-2" id="text-init-env">
+<p>
+Le projet MOSAIC est un projet de développement d'algorithmes de trading.
+</p>
+
+<p>
+Le projet se compose :
+</p>
+<ul class="org-ul">
+<li>d'une librairie python accessible ici <a href="https://github.com/edgemind-sas/mosaic.git">https://github.com/edgemind-sas/mosaic.git</a> contenant des
+fonctionnalités de création de stratégies sous forme de bot à base d'indictateurs techniques</li>
+<li>d'une application Mosaic monitor dont le code est clonable ici :
+<a href="https://github.com/edgemind-sas/mosaic_monitor">https://github.com/edgemind-sas/mosaic_monitor</a></li>
+</ul>
+
+<p>
+Pour fonctionner de manière optimale et pouvoir analyser les résultats, il est possible d'utiliser
+une base de données Mongo DB de manière à tracer les actions et les performances d'un bot créer avec
+la librairie MOSAIC. L'application MOSAIC Monitor peut ensuite se connecter à la base Mongo de
+manière à surveiller l'état des bots et visualiser leurs performances.
+</p>
+
+
+<p>
+Les paragraphes suivants donnent les prérequis pour tester la librairie MOSAIC.
+</p>
+</div>
+
+<div id="outline-container-orgd5e2c89" class="outline-3">
+<h3 id="orgd5e2c89"><span class="section-number-3">2.1.</span> Créer un environnement virtuel avec pew</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+Commencez par installer <code>pew</code> si cela n'est pas déjà fait :
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">pip install pew
+</pre>
+</div>
+
+<p>
+Créer ensuite un nouvel environnement virtuel :
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">pew new mosaic_env
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb7228ed" class="outline-3">
+<h3 id="orgb7228ed"><span class="section-number-3">2.2.</span> Installer la librairie MOSAIC avec pip</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+Installez la librairie MOSAIC dans votre environnement à partir de github :
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">pip install git+https://github.com/edgemind-sas/mosaic.git          
+</pre>
+</div>
+
+<p>
+Vous devriez être capable d'importer la librairie MOSAIC dans une session Python
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">import</span> mosaic
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org04f9a36" class="outline-3">
+<h3 id="org04f9a36"><span class="section-number-3">2.3.</span> Installer MongoDB avec Docker-compose</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+Créez le fichier <code>docker-compose.yml</code> avec le contenu suivant
+</p>
+<div class="org-src-container">
+<pre class="src src-yaml"><span style="color: #DFAF8F;">version</span>: <span style="color: #CC9393;">'3.1'</span>
+
+<span style="color: #DFAF8F;">services</span>:
+  <span style="color: #DFAF8F;">db</span>:
+    <span style="color: #DFAF8F;">image</span>: mongo
+    <span style="color: #DFAF8F;">container_name</span>: mongo_mosaic_trading
+    <span style="color: #DFAF8F;">ports</span>:
+      - 27017:27017
+    <span style="color: #DFAF8F;">networks</span>: 
+      - mongo-compose-network
+    <span style="color: #DFAF8F;">environment</span>:
+      <span style="color: #DFAF8F;">MONGO_INITDB_ROOT_USERNAME</span>: root
+      <span style="color: #DFAF8F;">MONGO_INITDB_ROOT_PASSWORD</span>: example
+
+<span style="color: #DFAF8F;">networks</span>:
+  <span style="color: #DFAF8F;">mongo-compose-network</span>:
+    <span style="color: #DFAF8F;">driver</span>: bridge
+</pre>
+</div>
+
+<p>
+Lancez MongoDB avec Docker-compose comme suit :
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">docker-compose up -d
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org68f4bb4" class="outline-3">
+<h3 id="org68f4bb4"><span class="section-number-3">2.4.</span> Cloner Mosaic Monitor</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+Clonez le dépôt Github suivant
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">git clone git+https://github.com/edgemind-sas/mosaic_monitor.git
+</pre>
+</div>
+
+<p>
+Entrez dans le répertoire <code>mosaic_monitor</code>
+</p>
+<div class="org-src-container">
+<pre class="src src-shell"><span style="color: #DCDCCC; font-weight: bold;">cd</span> mosaic_monitor
+</pre>
+</div>
+
+<p>
+Lancer l'application en faisant :
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">python app.py
+</pre>
+</div>
+
+
+
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">import</span> os
+<span style="color: #F0DFAF; font-weight: bold;">import</span> sys
+<span style="color: #F0DFAF; font-weight: bold;">import</span> tqdm
+<span style="color: #F0DFAF; font-weight: bold;">import</span> time
+<span style="color: #F0DFAF; font-weight: bold;">import</span> numpy <span style="color: #F0DFAF; font-weight: bold;">as</span> np
+<span style="color: #F0DFAF; font-weight: bold;">import</span> datetime
+<span style="color: #F0DFAF; font-weight: bold;">import</span> pandas <span style="color: #F0DFAF; font-weight: bold;">as</span> pd
+<span style="color: #F0DFAF; font-weight: bold;">import</span> plotly.io <span style="color: #F0DFAF; font-weight: bold;">as</span> pio
+
+<span style="color: #F0DFAF; font-weight: bold;">import</span> pkg_resources
+<span style="color: #DFAF8F;">installed_pkg</span> = {pkg.key <span style="color: #F0DFAF; font-weight: bold;">for</span> pkg <span style="color: #F0DFAF; font-weight: bold;">in</span> pkg_resources.working_set}
+<span style="color: #F0DFAF; font-weight: bold;">if</span> <span style="color: #CC9393;">'ipdb'</span> <span style="color: #F0DFAF; font-weight: bold;">in</span> installed_pkg:
+<span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #F0DFAF; font-weight: bold;">import</span> ipdb  <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">noqa: F401</span>
+<span style="color: #F0DFAF; font-weight: bold;">import</span> importlib
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Custom remote librairies</span>
+<span style="color: #F0DFAF; font-weight: bold;">import</span> mosaic
+<span style="color: #F0DFAF; font-weight: bold;">import</span> mosaic.utils <span style="color: #F0DFAF; font-weight: bold;">as</span> mut
+<span style="color: #F0DFAF; font-weight: bold;">import</span> mosaic.trading <span style="color: #F0DFAF; font-weight: bold;">as</span> mtr
+<span style="color: #F0DFAF; font-weight: bold;">import</span> mosaic.decision_model <span style="color: #F0DFAF; font-weight: bold;">as</span> mdm
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org8809d9c" class="outline-2">
+<h2 id="org8809d9c"><span class="section-number-2">3.</span> Création d'un bot achat-vente RSI</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-orge19a6b0" class="outline-3">
+<h3 id="orge19a6b0"><span class="section-number-3">3.1.</span> Création d'un modèle de décision</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+La création d'un bot d'achat-vente demande au préalable de disposer d'un modèle de décision
+d'achat-vente.
+</p>
+
+<p>
+Un modèle de décision d'achat-vente a simplement pour objectif de générer des signaux d'achat et des
+signaux de vente en fonction d'une certaine logique.
+</p>
+
+<p>
+Dans cet exemple, nous allons utiliser le modèle de décision <code>DML_RSI2</code> qui génère les signaux
+d'achat et de vente en fonction des valeurs observées de l'indicateur RSI.
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">dm = mdm.DML_RSI2(</span>
+<span style="color: #5F7F5F;">#         </span><span style="color: #7F9F7F;">offset=1,</span>
+<span style="color: #5F7F5F;">#         </span><span style="color: #7F9F7F;">params={</span>
+<span style="color: #5F7F5F;">#             </span><span style="color: #7F9F7F;">"window": 10,</span>
+<span style="color: #5F7F5F;">#             </span><span style="color: #7F9F7F;">"buy_level": 15,</span>
+<span style="color: #5F7F5F;">#             </span><span style="color: #7F9F7F;">"sell_level": 95,</span>
+<span style="color: #5F7F5F;">#         </span><span style="color: #7F9F7F;">})</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgb0dd25f" class="outline-2">
+<h2 id="orgb0dd25f"><span class="section-number-2">4.</span> Références</h2>
+<div class="outline-text-2" id="text-4">
+</div>
+</div>
+</div>
+</body>
+</html>
