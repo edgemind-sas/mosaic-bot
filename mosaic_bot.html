@@ -26,25 +26,25 @@
 <li><a href="#introduction">1. Introduction</a></li>
 <li><a href="#init-env">2. Initialisation de l'environnement</a>
 <ul>
-<li><a href="#org126c40d">2.1. Créer un environnement virtuel avec pew</a></li>
-<li><a href="#orga63a3a4">2.2. Installer la librairie MOSAIC avec pip</a></li>
-<li><a href="#org5d0963d">2.3. Installer MongoDB avec Docker-compose</a></li>
-<li><a href="#org0b7b4f7">2.4. Cloner Mosaic Monitor</a></li>
+<li><a href="#org62761eb">2.1. Créer un environnement virtuel avec pew</a></li>
+<li><a href="#org030b20b">2.2. Installer la librairie MOSAIC avec pip</a></li>
+<li><a href="#org6669eed">2.3. Installer <code>MongoDB</code> avec <code>Docker-compose</code></a></li>
+<li><a href="#orge0e5b91">2.4. Cloner Mosaic Monitor</a></li>
 </ul>
 </li>
-<li><a href="#orgeee8415">3. Création d'un bot</a>
+<li><a href="#org26c0610">3. Création d'un bot</a>
 <ul>
-<li><a href="#org4e08abd">3.1. Spécification du bot</a></li>
-<li><a href="#orge53723a">3.2. Exécution du bot en mode backtest</a></li>
-<li><a href="#org6b80e00">3.3. Éléments de Configuration d'un Bot</a>
+<li><a href="#org18e8db1">3.1. Spécification du bot</a>
 <ul>
-<li><a href="#orge46f8dd">3.3.1. Définition des indicateurs</a></li>
-<li><a href="#orgad21a5f">3.3.2. Modèles de Prédiction</a></li>
-<li><a href="#orgc375931">3.3.3. Spécification du Bot</a></li>
+<li><a href="#orgf278998">3.1.1. Configuration YAML</a></li>
+<li><a href="#org2394164">3.1.2. Éléments de Configuration d'un Bot</a></li>
 </ul>
 </li>
+<li><a href="#orga6f1e49">3.2. Exécution du bot en mode backtest</a></li>
+<li><a href="#orgb0f8a4e">3.3. Suivi du bot dans la base <code>MongoDB</code></a></li>
 </ul>
 </li>
+<li><a href="#org7834b7f">4. MOSAIC Monitor</a></li>
 </ul>
 </div>
 </div>
@@ -69,9 +69,9 @@ stratégies de trading sous forme de bots, basés sur divers indicateurs techniq
 
 <p>
 Pour analyser les résultats des stratégies de trading, MOSAIC permet
-l'intégration d'une base de données MongoDB. Cette base de données sert à enregistrer les actions et 
+l'intégration d'une base de données <code>MongoDB</code>. Cette base de données sert à enregistrer les actions et 
 les performances des bots créés via la librairie MOSAIC. Mosaic Monitor peut ensuite se connecter à
-cette base de données MongoDB pour surveiller en temps réel l'état des bots et en évaluer les performances. 
+cette base de données <code>MongoDB</code> pour surveiller en temps réel l'état des bots et en évaluer les performances. 
 </p>
 </div>
 </div>
@@ -85,8 +85,8 @@ Les paragraphes suivants donnent les prérequis pour tester la librairie MOSAIC.
 </p>
 </div>
 
-<div id="outline-container-org126c40d" class="outline-3">
-<h3 id="org126c40d"><span class="section-number-3">2.1.</span> Créer un environnement virtuel avec pew</h3>
+<div id="outline-container-org62761eb" class="outline-3">
+<h3 id="org62761eb"><span class="section-number-3">2.1.</span> Créer un environnement virtuel avec pew</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 Commencez par installer <code>pew</code> si cela n'est pas déjà fait :
@@ -106,8 +106,8 @@ Créer ensuite un nouvel environnement virtuel :
 </div>
 </div>
 
-<div id="outline-container-orga63a3a4" class="outline-3">
-<h3 id="orga63a3a4"><span class="section-number-3">2.2.</span> Installer la librairie MOSAIC avec pip</h3>
+<div id="outline-container-org030b20b" class="outline-3">
+<h3 id="org030b20b"><span class="section-number-3">2.2.</span> Installer la librairie MOSAIC avec pip</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 Installez la librairie MOSAIC dans votre environnement à partir de github :
@@ -128,11 +128,16 @@ Vous devriez être capable d'importer la librairie MOSAIC dans une session Pytho
 </div>
 
 
-<div id="outline-container-org5d0963d" class="outline-3">
-<h3 id="org5d0963d"><span class="section-number-3">2.3.</span> Installer MongoDB avec Docker-compose</h3>
+<div id="outline-container-org6669eed" class="outline-3">
+<h3 id="org6669eed"><span class="section-number-3">2.3.</span> Installer <code>MongoDB</code> avec <code>Docker-compose</code></h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
-Créez le fichier <code>docker-compose.yml</code> avec le contenu suivant
+Avant de commencer, assurer-vous d'avoir une installation de <code>Docker</code> fonctionnelle en ayant les
+droits dans lancer un container sans <code>sudo</code>. Assurez-vous également d'avoir installer <code>Docker-compose</code>.
+</p>
+
+<p>
+Créez le fichier <code>docker-compose.yml</code> avec le contenu suivant :
 </p>
 <div class="org-src-container">
 <pre class="src src-yaml"><span style="color: #DFAF8F;">version</span>: <span style="color: #CC9393;">'3.1'</span>
@@ -156,7 +161,7 @@ Créez le fichier <code>docker-compose.yml</code> avec le contenu suivant
 </div>
 
 <p>
-Lancez MongoDB avec Docker-compose comme suit :
+Lancez <code>MongoDB</code> avec <code>Docker-compose</code> comme suit :
 </p>
 <div class="org-src-container">
 <pre class="src src-shell">docker-compose up -d
@@ -165,8 +170,8 @@ Lancez MongoDB avec Docker-compose comme suit :
 </div>
 </div>
 
-<div id="outline-container-org0b7b4f7" class="outline-3">
-<h3 id="org0b7b4f7"><span class="section-number-3">2.4.</span> Cloner Mosaic Monitor</h3>
+<div id="outline-container-orge0e5b91" class="outline-3">
+<h3 id="orge0e5b91"><span class="section-number-3">2.4.</span> Cloner Mosaic Monitor</h3>
 <div class="outline-text-3" id="text-2-4">
 <p>
 Clonez le dépôt Github suivant
@@ -191,28 +196,23 @@ Lancer l'application en faisant :
 <pre class="src src-shell">python app.py
 </pre>
 </div>
-
-
-
-<div class="org-src-container">
-<pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">import</span> mosaic.trading <span style="color: #F0DFAF; font-weight: bold;">as</span> mtr
-<span style="color: #F0DFAF; font-weight: bold;">import</span> yaml
-</pre>
-</div>
 </div>
 </div>
 </div>
 
-
-<div id="outline-container-orgeee8415" class="outline-2">
-<h2 id="orgeee8415"><span class="section-number-2">3.</span> Création d'un bot</h2>
+<div id="outline-container-org26c0610" class="outline-2">
+<h2 id="org26c0610"><span class="section-number-2">3.</span> Création d'un bot</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org4e08abd" class="outline-3">
-<h3 id="org4e08abd"><span class="section-number-3">3.1.</span> Spécification du bot</h3>
+<div id="outline-container-org18e8db1" class="outline-3">
+<h3 id="org18e8db1"><span class="section-number-3">3.1.</span> Spécification du bot</h3>
 <div class="outline-text-3" id="text-3-1">
+</div>
+<div id="outline-container-orgf278998" class="outline-4">
+<h4 id="orgf278998"><span class="section-number-4">3.1.1.</span> Configuration YAML</h4>
+<div class="outline-text-4" id="text-3-1-1">
 <p>
-Pour définir un bot, le plus simple est créer un fichier de configuration permettant de spécifier
+Pour définir un bot, le plus simple est de créer un fichier de configuration permettant de spécifier
 les caractéristiques du bot.
 </p>
 
@@ -297,47 +297,12 @@ Pour ce faire, créez un fichier YAML <code>bot.yaml</code> contenant les élém
 </div>
 </div>
 
-<div id="outline-container-orge53723a" class="outline-3">
-<h3 id="orge53723a"><span class="section-number-3">3.2.</span> Exécution du bot en mode backtest</h3>
-<div class="outline-text-3" id="text-3-2">
+<div id="outline-container-org2394164" class="outline-4">
+<h4 id="org2394164"><span class="section-number-4">3.1.2.</span> Éléments de Configuration d'un Bot</h4>
+<div class="outline-text-4" id="text-3-1-2">
 <p>
-Créez ensuite le fichier Python <code>backtest_bot.py</code> suivant permettant de backtester le bot défini
-dans le fichier YAML précédent.
+<b>Définition des indicateurs</b>
 </p>
-<div class="org-src-container">
-<pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">import</span> mosaic.trading <span style="color: #F0DFAF; font-weight: bold;">as</span> mtr
-<span style="color: #F0DFAF; font-weight: bold;">import</span> yaml
-
-<span style="color: #F0DFAF; font-weight: bold;">with</span> <span style="color: #DCDCCC; font-weight: bold;">open</span>(<span style="color: #CC9393;">"bot.yaml"</span>, <span style="color: #CC9393;">'r'</span>, encoding=<span style="color: #CC9393;">"utf-8"</span>) <span style="color: #F0DFAF; font-weight: bold;">as</span> yaml_file:
-<span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   bot_config = yaml.load(yaml_file,
-<span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>  Loader=yaml.SafeLoader)
-<span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   bot_config[<span style="color: #CC9393;">"bot"</span>].setdefault(<span style="color: #CC9393;">"cls"</span>, <span style="color: #CC9393;">"BotTrading"</span>)
-<span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   bot = mtr.BotTrading.from_dict(bot_config[<span style="color: #CC9393;">"bot"</span>])
-
-bot.start(
-<span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   data_dir=<span style="color: #CC9393;">"."</span>,
-<span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   progress_mode=<span style="color: #BFEBBF;">True</span>,
-)
-
-<span style="color: #DCDCCC; font-weight: bold;">print</span>(bot.portfolio)
-</pre>
-</div>
-
-<p>
-Lancez le bot en exécutant la commande <code>python backtest_bot.py</code>. À la fin de l'exécution, vous
-devriez observer l'état du portefeuille (portfolio) du bot à la fin du backtest. Dans ce cas, nous
-ne sommes pas rentables&#x2026;
-</p>
-</div>
-</div>
-
-<div id="outline-container-org6b80e00" class="outline-3">
-<h3 id="org6b80e00"><span class="section-number-3">3.3.</span> Éléments de Configuration d'un Bot</h3>
-<div class="outline-text-3" id="text-3-3">
-</div>
-<div id="outline-container-orge46f8dd" class="outline-4">
-<h4 id="orge46f8dd"><span class="section-number-4">3.3.1.</span> Définition des indicateurs</h4>
-<div class="outline-text-4" id="text-3-3-1">
 <ul class="org-ul">
 <li><code>indics</code>: Ce bloc définit plusieurs indicateurs techniques utilisés par le modèle de décision.
 <ul class="org-ul">
@@ -346,12 +311,10 @@ ne sommes pas rentables&#x2026;
 <li><code>mfi_long</code>: Définit un autre indicateur MFI, mais avec une fenêtre de 120 unités de temps.</li>
 </ul></li>
 </ul>
-</div>
-</div>
 
-<div id="outline-container-orgad21a5f" class="outline-4">
-<h4 id="orgad21a5f"><span class="section-number-4">3.3.2.</span> Modèles de Prédiction</h4>
-<div class="outline-text-4" id="text-3-3-2">
+<p>
+<b>Modèles de Prédiction</b>
+</p>
 <ul class="org-ul">
 <li><code>predict_models</code>: Bloc décrivant les modèles de prédiction des rendements.
 <ul class="org-ul">
@@ -359,12 +322,10 @@ ne sommes pas rentables&#x2026;
 Utilise <code>mfi_short</code> et <code>mfi_long</code> comme variables explicatives.</li>
 </ul></li>
 </ul>
-</div>
-</div>
 
-<div id="outline-container-orgc375931" class="outline-4">
-<h4 id="orgc375931"><span class="section-number-4">3.3.3.</span> Spécification du Bot</h4>
-<div class="outline-text-4" id="text-3-3-3">
+<p>
+<b>Spécification du Bot</b>
+</p>
 <ul class="org-ul">
 <li><p>
 <code>bot</code>: Ce bloc spécifie les détails de configuration du bot de trading.
@@ -402,6 +363,117 @@ Utilise <code>mfi_short</code> et <code>mfi_long</code> comme variables explicat
 </ul>
 </div>
 </div>
+</div>
+
+
+<div id="outline-container-orga6f1e49" class="outline-3">
+<h3 id="orga6f1e49"><span class="section-number-3">3.2.</span> Exécution du bot en mode backtest</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+Créez ensuite le fichier Python <code>backtest_bot.py</code> suivant permettant de backtester le bot défini
+dans le fichier YAML précédent.
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">import</span> mosaic.trading <span style="color: #F0DFAF; font-weight: bold;">as</span> mtr
+<span style="color: #F0DFAF; font-weight: bold;">import</span> yaml
+
+<span style="color: #F0DFAF; font-weight: bold;">with</span> <span style="color: #DCDCCC; font-weight: bold;">open</span>(<span style="color: #CC9393;">"bot.yaml"</span>, <span style="color: #CC9393;">'r'</span>, encoding=<span style="color: #CC9393;">"utf-8"</span>) <span style="color: #F0DFAF; font-weight: bold;">as</span> yaml_file:
+<span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   bot_config = yaml.load(yaml_file,
+<span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>  Loader=yaml.SafeLoader)
+<span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   bot_config[<span style="color: #CC9393;">"bot"</span>].setdefault(<span style="color: #CC9393;">"cls"</span>, <span style="color: #CC9393;">"BotTrading"</span>)
+<span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   bot = mtr.BotTrading.from_dict(bot_config[<span style="color: #CC9393;">"bot"</span>])
+
+bot.start(
+<span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   data_dir=<span style="color: #CC9393;">"."</span>,
+<span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   progress_mode=<span style="color: #BFEBBF;">True</span>,
+)
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(bot.portfolio)
+</pre>
+</div>
+
+<p>
+Lancez le bot en exécutant la commande <code>python backtest_bot.py</code>. À la fin de l'exécution, vous
+devriez observer l'état du portefeuille (portfolio) du bot à la fin du backtest. Dans ce cas, nous
+ne sommes pas rentables&#x2026;
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb0f8a4e" class="outline-3">
+<h3 id="orgb0f8a4e"><span class="section-number-3">3.3.</span> Suivi du bot dans la base <code>MongoDB</code></h3>
+<div class="outline-text-3" id="text-3-3">
+<p>
+Si vous avez monté une base <code>MongoDB</code> sur votre machine en utilisation la configuration Docker
+précédente, vous pouvez alors indiquer au bot de sauvegarder son état et ses actions dans la base.
+</p>
+
+<p>
+Pour ce faire, il faut modifier le script de lancement du bot précédent comme suit :
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">import</span> mosaic.trading <span style="color: #F0DFAF; font-weight: bold;">as</span> mtr
+<span style="color: #F0DFAF; font-weight: bold;">import</span> yaml
+
+<span style="color: #F0DFAF; font-weight: bold;">with</span> <span style="color: #DCDCCC; font-weight: bold;">open</span>(<span style="color: #CC9393;">"bot.yaml"</span>, <span style="color: #CC9393;">'r'</span>, encoding=<span style="color: #CC9393;">"utf-8"</span>) <span style="color: #F0DFAF; font-weight: bold;">as</span> yaml_file:
+<span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   bot_config = yaml.load(yaml_file,
+<span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>  Loader=yaml.SafeLoader)
+<span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   bot_config[<span style="color: #CC9393;">"bot"</span>].setdefault(<span style="color: #CC9393;">"cls"</span>, <span style="color: #CC9393;">"BotTrading"</span>)
+<span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   bot_config[<span style="color: #CC9393;">"bot"</span>].setdefault(
+<span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #CC9393;">"db"</span>,
+<span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   {
+<span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #CC9393;">"cls"</span>: <span style="color: #CC9393;">"DBMongo"</span>,
+<span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #CC9393;">"name"</span>: <span style="color: #CC9393;">"mosaic_trading"</span>,
+<span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #CC9393;">"config"</span>: {
+<span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #CC9393;">"host"</span>: <span style="color: #CC9393;">"mongodb://localhost"</span>,
+<span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #CC9393;">"port"</span>: <span style="color: #CC9393;">"27017"</span>,
+<span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #CC9393;">"username"</span>: <span style="color: #CC9393;">"root"</span>,
+<span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #CC9393;">"password"</span>: <span style="color: #CC9393;">"example"</span>,
+<span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   },
+<span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   <span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   })
+
+<span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   bot = mtr.BotTrading.from_dict(bot_config[<span style="color: #CC9393;">"bot"</span>])
+
+bot.start(
+<span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   data_dir=<span style="color: #CC9393;">"."</span>,
+<span style="color: #DCDCCC; background-color: #4F4F4F;"> </span>   progress_mode=<span style="color: #BFEBBF;">True</span>,
+)
+</pre>
+</div>
+
+<p>
+Pour visualiser les informations disponibles dans la base <code>MongoDB</code>, nous allons utiliser l'outil
+MOSAIC Monitor.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7834b7f" class="outline-2">
+<h2 id="org7834b7f"><span class="section-number-2">4.</span> MOSAIC Monitor</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+Si ce n'est pas déjà fait, allez dans le répertoire où vous avez cloné MOSAIC Monitor et lancer la
+commande suivante :
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">python app.py
+</pre>
+</div>
+
+<p>
+Il est à noter que les paramètres de connexion à la base de données de suivi des bots sont définis
+dans le fichier config.yaml.
+</p>
+
+<p>
+Ouvrez à présent un navigateur web à l'adresse suivante : <a href="http://127.0.0.1:8050/">http://127.0.0.1:8050/</a>.
+</p>
+
+<p>
+Vous devriez voir le bot exécuté précédemment dans le tableau situé dans la partie inférieure de
+l'application.
+</p>
 </div>
 </div>
 </div>

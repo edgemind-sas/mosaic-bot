@@ -32,13 +32,13 @@ bot:
   ds_trading: &ds_trading
     symbol: "BTC/FDUSD"
     timeframe: "1s"
-    dt_start: "2023-09-13 00:00:00"
-    dt_end: "2023-09-15 00:00:00"
+    dt_start: "2023-09-15 00:00:00"
+    dt_end: "2023-09-16 00:00:00"
 
   ds_fit:
     <<: *ds_trading
     dt_start: "2023-09-12 00:00:00"
-    dt_end: "2023-09-13 00:00:00"
+    dt_end: "2023-09-15 00:00:00"
 
   portfolio: 
     quote_amount_init: 1
