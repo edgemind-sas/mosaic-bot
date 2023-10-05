@@ -26,25 +26,25 @@
 <li><a href="#introduction">1. Introduction</a></li>
 <li><a href="#init-env">2. Initialisation de l'environnement</a>
 <ul>
-<li><a href="#org62761eb">2.1. Créer un environnement virtuel avec pew</a></li>
-<li><a href="#org030b20b">2.2. Installer la librairie MOSAIC avec pip</a></li>
-<li><a href="#org6669eed">2.3. Installer <code>MongoDB</code> avec <code>Docker-compose</code></a></li>
-<li><a href="#orge0e5b91">2.4. Cloner Mosaic Monitor</a></li>
+<li><a href="#orga8940f9">2.1. Créer un environnement virtuel avec pew</a></li>
+<li><a href="#org1c794d0">2.2. Installer la librairie MOSAIC avec pip</a></li>
+<li><a href="#orgf9ce214">2.3. Installer <code>MongoDB</code> avec <code>Docker-compose</code></a></li>
+<li><a href="#org877fe42">2.4. Cloner Mosaic Monitor</a></li>
 </ul>
 </li>
-<li><a href="#org26c0610">3. Création d'un bot</a>
+<li><a href="#org5d114fb">3. Création d'un bot</a>
 <ul>
-<li><a href="#org18e8db1">3.1. Spécification du bot</a>
+<li><a href="#orgbd186a3">3.1. Spécification du bot</a>
 <ul>
-<li><a href="#orgf278998">3.1.1. Configuration YAML</a></li>
-<li><a href="#org2394164">3.1.2. Éléments de Configuration d'un Bot</a></li>
+<li><a href="#org75805ae">3.1.1. Configuration YAML</a></li>
+<li><a href="#orge00e27a">3.1.2. Éléments de Configuration d'un Bot</a></li>
 </ul>
 </li>
-<li><a href="#orga6f1e49">3.2. Exécution du bot en mode backtest</a></li>
-<li><a href="#orgb0f8a4e">3.3. Suivi du bot dans la base <code>MongoDB</code></a></li>
+<li><a href="#org3b9a496">3.2. Exécution du bot en mode backtest</a></li>
+<li><a href="#org6bbe7b7">3.3. Suivi du bot dans la base <code>MongoDB</code></a></li>
 </ul>
 </li>
-<li><a href="#org7834b7f">4. MOSAIC Monitor</a></li>
+<li><a href="#orga53ae74">4. MOSAIC Monitor</a></li>
 </ul>
 </div>
 </div>
@@ -85,8 +85,8 @@ Les paragraphes suivants donnent les prérequis pour tester la librairie MOSAIC.
 </p>
 </div>
 
-<div id="outline-container-org62761eb" class="outline-3">
-<h3 id="org62761eb"><span class="section-number-3">2.1.</span> Créer un environnement virtuel avec pew</h3>
+<div id="outline-container-orga8940f9" class="outline-3">
+<h3 id="orga8940f9"><span class="section-number-3">2.1.</span> Créer un environnement virtuel avec pew</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 Commencez par installer <code>pew</code> si cela n'est pas déjà fait :
@@ -106,8 +106,8 @@ Créer ensuite un nouvel environnement virtuel :
 </div>
 </div>
 
-<div id="outline-container-org030b20b" class="outline-3">
-<h3 id="org030b20b"><span class="section-number-3">2.2.</span> Installer la librairie MOSAIC avec pip</h3>
+<div id="outline-container-org1c794d0" class="outline-3">
+<h3 id="org1c794d0"><span class="section-number-3">2.2.</span> Installer la librairie MOSAIC avec pip</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 Installez la librairie MOSAIC dans votre environnement à partir de github :
@@ -128,8 +128,8 @@ Vous devriez être capable d'importer la librairie MOSAIC dans une session Pytho
 </div>
 
 
-<div id="outline-container-org6669eed" class="outline-3">
-<h3 id="org6669eed"><span class="section-number-3">2.3.</span> Installer <code>MongoDB</code> avec <code>Docker-compose</code></h3>
+<div id="outline-container-orgf9ce214" class="outline-3">
+<h3 id="orgf9ce214"><span class="section-number-3">2.3.</span> Installer <code>MongoDB</code> avec <code>Docker-compose</code></h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 Avant de commencer, assurer-vous d'avoir une installation de <code>Docker</code> fonctionnelle en ayant les
@@ -170,14 +170,14 @@ Lancez <code>MongoDB</code> avec <code>Docker-compose</code> comme suit :
 </div>
 </div>
 
-<div id="outline-container-orge0e5b91" class="outline-3">
-<h3 id="orge0e5b91"><span class="section-number-3">2.4.</span> Cloner Mosaic Monitor</h3>
+<div id="outline-container-org877fe42" class="outline-3">
+<h3 id="org877fe42"><span class="section-number-3">2.4.</span> Cloner Mosaic Monitor</h3>
 <div class="outline-text-3" id="text-2-4">
 <p>
 Clonez le dépôt Github suivant
 </p>
 <div class="org-src-container">
-<pre class="src src-shell">git clone git+https://github.com/edgemind-sas/mosaic_monitor.git
+<pre class="src src-shell">git clone https://github.com/edgemind-sas/mosaic_monitor.git
 </pre>
 </div>
 
@@ -190,7 +190,15 @@ Entrez dans le répertoire <code>mosaic_monitor</code>
 </div>
 
 <p>
-Lancer l'application en faisant :
+Installez les dépendances avec :
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">pip install -r python_requirements.txt
+</pre>
+</div>
+
+<p>
+Et lancez l'application en faisant :
 </p>
 <div class="org-src-container">
 <pre class="src src-shell">python app.py
@@ -200,16 +208,16 @@ Lancer l'application en faisant :
 </div>
 </div>
 
-<div id="outline-container-org26c0610" class="outline-2">
-<h2 id="org26c0610"><span class="section-number-2">3.</span> Création d'un bot</h2>
+<div id="outline-container-org5d114fb" class="outline-2">
+<h2 id="org5d114fb"><span class="section-number-2">3.</span> Création d'un bot</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org18e8db1" class="outline-3">
-<h3 id="org18e8db1"><span class="section-number-3">3.1.</span> Spécification du bot</h3>
+<div id="outline-container-orgbd186a3" class="outline-3">
+<h3 id="orgbd186a3"><span class="section-number-3">3.1.</span> Spécification du bot</h3>
 <div class="outline-text-3" id="text-3-1">
 </div>
-<div id="outline-container-orgf278998" class="outline-4">
-<h4 id="orgf278998"><span class="section-number-4">3.1.1.</span> Configuration YAML</h4>
+<div id="outline-container-org75805ae" class="outline-4">
+<h4 id="org75805ae"><span class="section-number-4">3.1.1.</span> Configuration YAML</h4>
 <div class="outline-text-4" id="text-3-1-1">
 <p>
 Pour définir un bot, le plus simple est de créer un fichier de configuration permettant de spécifier
@@ -297,8 +305,8 @@ Pour ce faire, créez un fichier YAML <code>bot.yaml</code> contenant les élém
 </div>
 </div>
 
-<div id="outline-container-org2394164" class="outline-4">
-<h4 id="org2394164"><span class="section-number-4">3.1.2.</span> Éléments de Configuration d'un Bot</h4>
+<div id="outline-container-orge00e27a" class="outline-4">
+<h4 id="orge00e27a"><span class="section-number-4">3.1.2.</span> Éléments de Configuration d'un Bot</h4>
 <div class="outline-text-4" id="text-3-1-2">
 <p>
 <b>Définition des indicateurs</b>
@@ -366,8 +374,8 @@ Utilise <code>mfi_short</code> et <code>mfi_long</code> comme variables explicat
 </div>
 
 
-<div id="outline-container-orga6f1e49" class="outline-3">
-<h3 id="orga6f1e49"><span class="section-number-3">3.2.</span> Exécution du bot en mode backtest</h3>
+<div id="outline-container-org3b9a496" class="outline-3">
+<h3 id="org3b9a496"><span class="section-number-3">3.2.</span> Exécution du bot en mode backtest</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 Créez ensuite le fichier Python <code>backtest_bot.py</code> suivant permettant de backtester le bot défini
@@ -400,8 +408,8 @@ ne sommes pas rentables&#x2026;
 </div>
 </div>
 
-<div id="outline-container-orgb0f8a4e" class="outline-3">
-<h3 id="orgb0f8a4e"><span class="section-number-3">3.3.</span> Suivi du bot dans la base <code>MongoDB</code></h3>
+<div id="outline-container-org6bbe7b7" class="outline-3">
+<h3 id="org6bbe7b7"><span class="section-number-3">3.3.</span> Suivi du bot dans la base <code>MongoDB</code></h3>
 <div class="outline-text-3" id="text-3-3">
 <p>
 Si vous avez monté une base <code>MongoDB</code> sur votre machine en utilisation la configuration Docker
@@ -449,8 +457,8 @@ MOSAIC Monitor.
 </div>
 </div>
 
-<div id="outline-container-org7834b7f" class="outline-2">
-<h2 id="org7834b7f"><span class="section-number-2">4.</span> MOSAIC Monitor</h2>
+<div id="outline-container-orga53ae74" class="outline-2">
+<h2 id="orga53ae74"><span class="section-number-2">4.</span> MOSAIC Monitor</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 Si ce n'est pas déjà fait, allez dans le répertoire où vous avez cloné MOSAIC Monitor et lancer la
